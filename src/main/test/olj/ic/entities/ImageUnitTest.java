@@ -1,4 +1,4 @@
-package olj.ic.entities;
+package olj.wallpaperupdater.entities;
 
 import java.util.Arrays;
 

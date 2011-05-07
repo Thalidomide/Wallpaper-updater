@@ -1,7 +1,7 @@
-package olj.ic.work;
+package olj.wallpaperupdater.work;
 
 import junit.framework.TestCase;
-import olj.ic.util.Manager;
+import olj.wallpaperupdater.util.Manager;
 
 /**
  * @author Olav Jensen

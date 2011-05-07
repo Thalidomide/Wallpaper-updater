@@ -1,4 +1,4 @@
-package olj.ic.gui.components;
+package olj.wallpaperupdater.gui.components;
 
 import junit.framework.TestCase;
 

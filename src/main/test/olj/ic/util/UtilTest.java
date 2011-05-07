@@ -1,4 +1,4 @@
-package olj.ic.util;
+package olj.wallpaperupdater.util;
 
 import junit.framework.TestCase;
 

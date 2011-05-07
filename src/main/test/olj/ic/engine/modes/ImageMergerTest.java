@@ -1,11 +1,11 @@
-package olj.ic.engine.modes;
+package olj.wallpaperupdater.engine.modes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import olj.ic.entities.ImageComponent;
-import olj.ic.entities.ImageUnit;
+import olj.wallpaperupdater.entities.ImageComponent;
+import olj.wallpaperupdater.entities.ImageUnit;
 
 /**
  * @author Olav Jensen
