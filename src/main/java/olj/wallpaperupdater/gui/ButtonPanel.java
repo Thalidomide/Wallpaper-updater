@@ -1,14 +1,14 @@
 package olj.wallpaperupdater.gui;
 
+import olj.wallpaperupdater.gui.components.Button;
+import olj.wallpaperupdater.gui.components.Panel;
+import olj.wallpaperupdater.util.Constants;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JButton;
-
-import olj.wallpaperupdater.gui.components.Button;
-import olj.wallpaperupdater.gui.components.Panel;
-import olj.wallpaperupdater.util.Constants;
 
 /**
  * @author Olav Jensen
@@ -22,6 +22,7 @@ public class ButtonPanel extends Panel {
 	private Button settings;
 
 	private boolean saveButtonEnabled;
+    private boolean generatingWallpapers;
 
 	public ButtonPanel(ButtonPanelListener listener) {
 		this.listener = listener;
@@ -57,19 +58,34 @@ public class ButtonPanel extends Panel {
 	}
 
 	private JButton getSaveImages() {
-		saveImages = new Button("Save images");
+		saveImages = new Button("Start wallpaper generation");
 		saveImages.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listener.saveNewImage();
-			}
+                toggleGeneratingWallpapers();
+            }
 		});
 		saveImages.setEnabled(false);
 
 		return saveImages;
 	}
 
-	private JButton getSettings() {
+    private void toggleGeneratingWallpapers() {
+        generatingWallpapers = !generatingWallpapers;
+        String buttonText;
+
+        if (generatingWallpapers) {
+            listener.startGeneratingWallpapers();
+            buttonText = "Stop wallpaper generation";
+        } else {
+            listener.stopGeneratingWallpapers();
+            buttonText = "Start wallpaper generation";
+        }
+
+        saveImages.setText(buttonText);
+    }
+
+    private JButton getSettings() {
 		settings = new Button("Settings");
 		settings.addMouseListener(new MouseAdapter() {
 			@Override

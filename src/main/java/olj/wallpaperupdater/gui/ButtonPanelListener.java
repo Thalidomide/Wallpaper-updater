@@ -8,7 +8,9 @@ public interface ButtonPanelListener {
 
 	void openFolder();
 
-	void saveNewImage();
+	void startGeneratingWallpapers();
 
 	void showSettings();
+
+    void stopGeneratingWallpapers();
 }

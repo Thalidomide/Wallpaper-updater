@@ -34,7 +34,7 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 		setSize(Constants.SIZE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocation(0, 0);
-        setTitle("Image merger (v " + Constants.VERSION + ")");
+        setTitle("Wallpaper updater (v " + Constants.VERSION + ")");
 
 		setTransferHandler(new ImageTransferHandler(this));
 
@@ -94,7 +94,7 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 	}
 
 	@Override
-	public void saveNewImage() {
+	public void startGeneratingWallpapers() {
 		if (selectedFilesOrDirectory == null || selectedFilesOrDirectory.length == 0) {
 			throw new IllegalStateException("There are not any files selected!");
 		}
@@ -102,15 +102,17 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 		File file = selectedFilesOrDirectory[0];
 		String currentPath = isSelectedDirectory() ? file.getAbsolutePath() : file.getParent();
 
-		String savePath = currentPath + "/" + "Wallpapers";
-
-        System.out.println("Lagre fila til: " + savePath);
-
+		String savePath = currentPath + "/" + "CurrrentWallpaper";
 
 		ImageSaverLoader.saveImage(resultPanel.getRandomImageUnit(), savePath);
 	}
 
-	@Override
+    @Override
+    public void stopGeneratingWallpapers() {
+        //TODO Implement
+    }
+
+    @Override
 	public void addMessage(String message) {
 		statusPanel.addMessage(message);
 	}
