@@ -9,8 +9,8 @@ public class WallpaperScreen {
     private int x;
     private int y;
 
-    private int width;
-    private int height;
+    private int width = 1920;
+    private int height = 1200;
 
 
     public int getX() {

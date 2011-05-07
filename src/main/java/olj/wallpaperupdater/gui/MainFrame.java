@@ -1,13 +1,5 @@
 package olj.wallpaperupdater.gui;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.HeadlessException;
-import java.io.File;
-import java.util.List;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-
 import olj.wallpaperupdater.engine.ImageSaverLoader;
 import olj.wallpaperupdater.engine.modes.util.ImageUtil;
 import olj.wallpaperupdater.entities.ImageFile;
@@ -15,12 +7,12 @@ import olj.wallpaperupdater.gui.components.Panel;
 import olj.wallpaperupdater.util.Constants;
 import olj.wallpaperupdater.util.Manager;
 import olj.wallpaperupdater.util.Util;
-import olj.wallpaperupdater.work.MessageListener;
-import olj.wallpaperupdater.work.StatusListener;
-import olj.wallpaperupdater.work.StatusType;
-import olj.wallpaperupdater.work.Work;
-import olj.wallpaperupdater.work.WorkHandler;
-import olj.wallpaperupdater.work.WorkPackage;
+import olj.wallpaperupdater.work.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.util.List;
 
 /**
  * @author Olav Jensen
@@ -110,7 +102,9 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 		File file = selectedFilesOrDirectory[0];
 		String currentPath = isSelectedDirectory() ? file.getAbsolutePath() : file.getParent();
 
-		String savePath = currentPath + "\\" + "Wallpapers";
+		String savePath = currentPath + "/" + "Wallpapers";
+
+        System.out.println("Lagre fila til: " + savePath);
 
 
 		ImageSaverLoader.saveImage(resultPanel.getRandomImageUnit(), savePath);

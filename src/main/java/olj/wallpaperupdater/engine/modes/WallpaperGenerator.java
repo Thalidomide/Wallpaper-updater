@@ -1,15 +1,8 @@
 package olj.wallpaperupdater.engine.modes;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.util.List;
-
-import olj.wallpaperupdater.engine.modes.util.ImageUtil;
-import olj.wallpaperupdater.entities.ImageFile;
 import olj.wallpaperupdater.entities.WallpaperScreen;
-import olj.wallpaperupdater.util.Manager;
+
+import java.awt.image.BufferedImage;
 
 /**
  * @author Olav Jensen

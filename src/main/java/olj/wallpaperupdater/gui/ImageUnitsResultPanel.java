@@ -1,19 +1,15 @@
 package olj.wallpaperupdater.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JScrollPane;
-
 import olj.wallpaperupdater.entities.ImageFile;
 import olj.wallpaperupdater.gui.components.Label;
 import olj.wallpaperupdater.gui.components.Panel;
 import olj.wallpaperupdater.gui.util.GuiUtil;
 import olj.wallpaperupdater.util.Constants;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Olav Jensen
@@ -95,7 +91,7 @@ public class ImageUnitsResultPanel extends Panel {
             return null;
         }
 
-        int randomIndex = (int) Math.round(Math.random() * activeImages.size());
+        int randomIndex = (int) (Math.random() * activeImages.size());
 
 		return activeImages.get(randomIndex);
 	}

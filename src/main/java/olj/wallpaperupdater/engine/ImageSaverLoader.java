@@ -1,15 +1,15 @@
 package olj.wallpaperupdater.engine;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import javax.imageio.ImageIO;
-
 import olj.wallpaperupdater.engine.modes.WallpaperGenerator;
 import olj.wallpaperupdater.entities.ImageFile;
 import olj.wallpaperupdater.entities.WallpaperScreen;
 import olj.wallpaperupdater.util.Manager;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Olav Jensen
@@ -27,9 +27,12 @@ public class ImageSaverLoader {
         for (WallpaperScreen screen : screens) {
             BufferedImage image = generator.getCalculatedImage(srcImage, screen);
 
-            String imagePath = rootPath + "\\" + index + "\\" + index + "-" + imageFile.getName();
+            //String imagePath = rootPath + "/" + index + "/" + index + "-" + imageFile.getName();
+            String imagePath = rootPath + "/" + index + "/" + index + ".png";
 
             saveImage(image, imagePath);
+
+            index++;
         }
     }
 

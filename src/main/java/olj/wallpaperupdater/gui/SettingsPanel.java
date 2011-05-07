@@ -1,12 +1,13 @@
 package olj.wallpaperupdater.gui;
 
 import olj.wallpaperupdater.engine.EngineSettings;
+import olj.wallpaperupdater.entities.WallpaperScreen;
 import olj.wallpaperupdater.gui.components.Button;
 import olj.wallpaperupdater.gui.components.Panel;
 import olj.wallpaperupdater.util.Constants;
 import olj.wallpaperupdater.util.Manager;
+import sun.awt.OrientableFlowLayout;
 
-import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -22,7 +23,7 @@ public class SettingsPanel extends Panel {
 
 	private final SettingsListener listener;
 	private Panel subPanel;
-	private EngineSettings engineSettings;
+	private EngineSettings settings;
 
     private List<WallpaperScreenSettings> settingsPanels = new ArrayList<WallpaperScreenSettings>();
 
@@ -32,29 +33,23 @@ public class SettingsPanel extends Panel {
 		super(new BorderLayout());
 
 		this.listener = listener;
-		engineSettings = Manager.get().getEngineSettings();
+		settings = Manager.get().getEngineSettings();
 
 		addSettingsComponents();
 		addButtons();
 	}
 
 	private void addSettingsComponents() {
-		Panel settingsContent = new Panel(new BorderLayout());
+        OrientableFlowLayout l = new OrientableFlowLayout(OrientableFlowLayout.VERTICAL);
+        l.setAlignOnBaseline(true);
+        l.setAlignment(OrientableFlowLayout.TOP);
 
-        JButton btnAdd = new JButton();
-        btnAdd.setText("Legg til skjerm");
-        settingsContent.add(btnAdd);
-
-		Panel engineCommonPanel = new Panel();
-		subPanel = new Panel();
+		subPanel = new Panel(l);
 		subPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
-
-		settingsContent.add(engineCommonPanel, BorderLayout.NORTH);
-		settingsContent.add(subPanel, BorderLayout.CENTER);
 
 		restoreGui();
 
-		add(settingsContent, BorderLayout.CENTER);
+		add(subPanel, BorderLayout.CENTER);
 	}
 
 	private void addButtons() {
@@ -62,11 +57,20 @@ public class SettingsPanel extends Panel {
 		Button save = new Button("Save");
 		Button cancel = new Button("Cancel");
 
+        Button addScreen = new Button("Add screen");
+
+        addScreen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+                addScreen();
+            }
+        });
+
 		save.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if (isValidInput()) {
-					save();
+                boolean valid = saveAndValidate();
+				if (valid) {
 					listener.saveSettings();
 				}
 			}
@@ -80,18 +84,32 @@ public class SettingsPanel extends Panel {
 			}
 		});
 
+		buttonPanel.add(addScreen);
 		buttonPanel.add(save);
 		buttonPanel.add(cancel);
 
-		add(buttonPanel, BorderLayout.SOUTH);
+		add(buttonPanel, BorderLayout.NORTH);
 	}
 
-	private boolean isValidInput() {
-		return true;//TODO Any case where this is not true?
-	}
+    private void addScreen() {
+        WallpaperScreen screen = new WallpaperScreen();
+        WallpaperScreenSettings screenSettings = new WallpaperScreenSettings(screen);
 
-	private void save() {
-		//TODO Nothinbg to do here?
+        settings.addScreen(screen);
+        settingsPanels.add(screenSettings);
+        subPanel.add(screenSettings);
+
+        subPanel.validate();
+    }
+
+	private boolean saveAndValidate() {
+        boolean valid = true;
+
+        for (WallpaperScreenSettings settingsPanel : settingsPanels) {
+            valid &= settingsPanel.saveAndValidate();
+        }
+
+		return valid;
 	}
 
 	private void restoreGui() {
