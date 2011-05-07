@@ -1,7 +1,6 @@
 package olj.wallpaperupdater.work;
 
 import junit.framework.TestCase;
-import olj.wallpaperupdater.util.Manager;
 
 /**
  * @author Olav Jensen
@@ -34,7 +33,7 @@ public class WorkHandlerTest extends TestCase implements StatusListener {
 			}
 		}
 
-		Manager.get().getEngineSettings().setThreads(1);
+		//Manager.get().getEngineSettings().setThreads(1);
 
 		assertEquals(StatusType.idle, statusType);
 		assertEquals(1, statusChangedCounter);

@@ -8,7 +8,7 @@ public interface ButtonPanelListener {
 
 	void openFolder();
 
-	void storeImages();
+	void saveNewImage();
 
 	void showSettings();
 }

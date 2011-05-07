@@ -27,7 +27,7 @@ public class WorkHandler {
 	}
 
 	public synchronized void doWork(final WorkPackage workPackage) {
-		int threads = Manager.get().getEngineSettings().getThreads();
+		int threads = 1;//Manager.get().getEngineSettings().getThreads();
 		if (currentStatus == StatusType.idle || pool != threads) {
 			pool = threads;
 			executor = createExecutor();

@@ -1,6 +1,10 @@
 package olj.wallpaperupdater.engine;
 
+import olj.wallpaperupdater.entities.WallpaperScreen;
 import olj.wallpaperupdater.util.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Olav Jensen
@@ -8,58 +12,17 @@ import olj.wallpaperupdater.util.Constants;
  */
 public class EngineSettings {
 
-	private boolean leftRightReversed;
-	private EngineMode engineMode = EngineMode.composite;
-	private int imageParts = Constants.MIN_IMAGE_PARTS;
-	private int threads = Constants.MIN_WORKING_THREADS;
-	private double scaleX = 1;
-	private double scaleY = 1;
+	private List<WallpaperScreen> screens = new ArrayList<WallpaperScreen>();
 
-	public boolean isLeftRightReversed() {
-		return leftRightReversed;
-	}
+    public void addScreen(WallpaperScreen screen) {
+        screens.add(screen);
+    }
 
-	public void setLeftRightReversed(boolean leftRightReversed) {
-		this.leftRightReversed = leftRightReversed;
-	}
+    public void removeScreen(WallpaperScreen screen) {
+        screens.remove(screen);
+    }
 
-	public EngineMode getEngineMode() {
-		return engineMode;
-	}
-
-	public void setEngineMode(EngineMode engineMode) {
-		this.engineMode = engineMode;
-	}
-
-	public int getImageParts() {
-		return imageParts;
-	}
-
-	public void setImageParts(int imageParts) {
-		this.imageParts = imageParts;
-	}
-
-	public int getThreads() {
-		return threads;
-	}
-
-	public void setThreads(int threads) {
-		this.threads = threads;
-	}
-
-	public double getScaleX() {
-		return scaleX;
-	}
-
-	public void setScaleX(double scaleX) {
-		this.scaleX = scaleX;
-	}
-
-	public double getScaleY() {
-		return scaleY;
-	}
-
-	public void setScaleY(double scaleY) {
-		this.scaleY = scaleY;
-	}
+    public List<WallpaperScreen> getScreens() {
+        return screens;
+    }
 }

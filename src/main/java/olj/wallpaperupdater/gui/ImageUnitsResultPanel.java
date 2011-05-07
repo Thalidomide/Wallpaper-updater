@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JScrollPane;
 
-import olj.wallpaperupdater.entities.ImageUnit;
+import olj.wallpaperupdater.entities.ImageFile;
 import olj.wallpaperupdater.gui.components.Label;
 import olj.wallpaperupdater.gui.components.Panel;
 import olj.wallpaperupdater.gui.util.GuiUtil;
@@ -45,18 +45,18 @@ public class ImageUnitsResultPanel extends Panel {
 		add(scroll, BorderLayout.CENTER);
 	}
 
-	public synchronized void setPairs(List<ImageUnit> units) {
+	public synchronized void setImageFiles(List<ImageFile> files) {
 		unitPanels.clear();
 
 		int index = 0;
-		for (ImageUnit unit : units) {
+		for (ImageFile file : files) {
 			Color color = index % 2 == 0 ? Constants.BACKGROUND_LIGHT : Constants.BACKGROUND_LIGHTER;
-			ImageUnitPanel unitPanel = new ImageUnitPanel(unit, color, index);
+			ImageUnitPanel unitPanel = new ImageUnitPanel(file, color, index);
 			unitPanels.add(unitPanel);
 			index++;
 		}
 
-		updateResultLabel(units);
+		updateResultLabel(files);
 
 		repaint();
 	}
@@ -84,23 +84,29 @@ public class ImageUnitsResultPanel extends Panel {
 		validate();
 	}
 
-	public List<ImageUnit> getImageUnits() {
-		List<ImageUnit> pairs = new ArrayList<ImageUnit>();
+	public ImageFile getRandomImageUnit() {
+		List<ImageFile> activeImages = new ArrayList<ImageFile>();
 
 		for (ImageUnitPanel unitPanel : unitPanels) {
-			unitPanel.addImageIfActive(pairs);
+			unitPanel.addImageIfActive(activeImages);
 		}
 
-		return pairs;
+        if (activeImages.isEmpty()) {
+            return null;
+        }
+
+        int randomIndex = (int) Math.round(Math.random() * activeImages.size());
+
+		return activeImages.get(randomIndex);
 	}
 
-	private void updateResultLabel(List<ImageUnit> units) {
+	private void updateResultLabel(List<ImageFile> files) {
 		String text;
 
-		if (units.isEmpty()) {
+		if (files.isEmpty()) {
 			text = "No images found.";
 		} else {
-			text = "Images found: " + units.size() + ".";
+			text = "Images found: " + files.size() + ".";
 		}
 
 		resultLabel.setText(text);

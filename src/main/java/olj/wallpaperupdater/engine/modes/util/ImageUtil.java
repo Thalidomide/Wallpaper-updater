@@ -3,11 +3,9 @@ package olj.wallpaperupdater.engine.modes.util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import olj.wallpaperupdater.entities.ImageComponent;
-import olj.wallpaperupdater.entities.ImageUnit;
+import olj.wallpaperupdater.entities.ImageFile;
 import olj.wallpaperupdater.util.Util;
 
 /**
@@ -20,15 +18,14 @@ public class ImageUtil {
 		return new BufferedImage(width, heigth, BufferedImage.TYPE_INT_ARGB);
 	}
 
-    public static List<ImageUnit> getSingleImageUnitsFromFiles(File[] files) {
-		List<ImageUnit> imageComponents = new ArrayList<ImageUnit>();
+    public static List<ImageFile> getImageFiles(File[] files) {
+		List<ImageFile> imageComponents = new ArrayList<ImageFile>();
 
 		for (File file : files) {
 			String fileNameWithEnding = file.getName();
 			if (Util.isValidImageFile(fileNameWithEnding)) {
 				String nameWithoutEnding = Util.getFileNameWithoutEnding(fileNameWithEnding);
-				ImageComponent component = new ImageComponent(file, nameWithoutEnding, 0);
-				imageComponents.add(new ImageUnit(Arrays.asList(component)));
+				imageComponents.add(new ImageFile(file, nameWithoutEnding));
 			}
 		}
 

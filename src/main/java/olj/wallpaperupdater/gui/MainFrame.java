@@ -8,9 +8,9 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-import olj.wallpaperupdater.engine.ImageEngineUtil;
 import olj.wallpaperupdater.engine.ImageSaverLoader;
-import olj.wallpaperupdater.entities.ImageUnit;
+import olj.wallpaperupdater.engine.modes.util.ImageUtil;
+import olj.wallpaperupdater.entities.ImageFile;
 import olj.wallpaperupdater.gui.components.Panel;
 import olj.wallpaperupdater.util.Constants;
 import olj.wallpaperupdater.util.Manager;
@@ -102,7 +102,7 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 	}
 
 	@Override
-	public void storeImages() {
+	public void saveNewImage() {
 		if (selectedFilesOrDirectory == null || selectedFilesOrDirectory.length == 0) {
 			throw new IllegalStateException("There are not any files selected!");
 		}
@@ -110,12 +110,10 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 		File file = selectedFilesOrDirectory[0];
 		String currentPath = isSelectedDirectory() ? file.getAbsolutePath() : file.getParent();
 
-		String savePath = currentPath + "\\" + Manager.get().getEngineSettings().getEngineMode();
-		if (Manager.get().getEngineSettings().isLeftRightReversed()) {
-			savePath += "Reversed";
-		}
+		String savePath = currentPath + "\\" + "Wallpapers";
 
-		ImageSaverLoader.saveImageUnits(resultPanel.getImageUnits(), savePath);
+
+		ImageSaverLoader.saveImage(resultPanel.getRandomImageUnit(), savePath);
 	}
 
 	@Override
@@ -150,9 +148,10 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 
 	private void loadImagesFromDirectory() {
 		File[] files = isSelectedDirectory() ? selectedFilesOrDirectory[0].listFiles() : selectedFilesOrDirectory;
-		List<ImageUnit> imageUnits = ImageEngineUtil.getImageUnits(files);
-		resultPanel.setPairs(imageUnits);
-		buttonPanel.setSaveButtonEnabled(!imageUnits.isEmpty());
+		List<ImageFile> imageFiles = ImageUtil.getImageFiles(files);
+
+		resultPanel.setImageFiles(imageFiles);
+		buttonPanel.setSaveButtonEnabled(!imageFiles.isEmpty());
 	}
 
 	private boolean isSelectedDirectory() {

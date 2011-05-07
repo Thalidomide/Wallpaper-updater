@@ -3,14 +3,13 @@ package olj.wallpaperupdater.engine;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 
-import olj.wallpaperupdater.entities.ImageUnit;
-import olj.wallpaperupdater.work.Work;
+import olj.wallpaperupdater.engine.modes.WallpaperGenerator;
+import olj.wallpaperupdater.entities.ImageFile;
+import olj.wallpaperupdater.entities.WallpaperScreen;
 import olj.wallpaperupdater.util.Manager;
-import olj.wallpaperupdater.work.WorkPackage;
 
 /**
  * @author Olav Jensen
@@ -18,23 +17,21 @@ import olj.wallpaperupdater.work.WorkPackage;
  */
 public class ImageSaverLoader {
 
-	public static void saveImageUnits(final List<ImageUnit> units, final String path) {
-		List<Work> workList = new ArrayList<Work>(units.size());
+    public static void saveImage(ImageFile imageFile, String rootPath) {
+        WallpaperGenerator generator = new WallpaperGenerator();
+        BufferedImage srcImage = imageFile.getImage();
+        List<WallpaperScreen> screens = Manager.get().getEngineSettings().getScreens();
 
-		int index = 1;
-		for (final ImageUnit unit : units) {
-			final int curIndex = index++;
-			workList.add(new Work() {
-				@Override
-				public void executeWork() {
-					String filePath = path + "\\" + unit.getName() + ".png";
-					Manager.get().getMessageListener().addMessage(" - Saving image " + curIndex + " of " + units.size() + " (" + filePath + ")");
-					saveImage(unit.getImageResult(), filePath);
-				}
-			});
-		}
-		Manager.get().getWorkHandler().doWork(new WorkPackage("Create images", workList));
-	}
+        int index = 1;
+
+        for (WallpaperScreen screen : screens) {
+            BufferedImage image = generator.getCalculatedImage(srcImage, screen);
+
+            String imagePath = rootPath + "\\" + index + "\\" + index + "-" + imageFile.getName();
+
+            saveImage(image, imagePath);
+        }
+    }
 
 	private static void saveImage(BufferedImage image, String filePath) {
 		try {
