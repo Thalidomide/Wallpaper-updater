@@ -92,9 +92,13 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 		int action = fileChooser.showDialog(MainFrame.this, "Open");
 
 		if (action == JFileChooser.APPROVE_OPTION) {
-            targetFolder = fileChooser.getSelectedFile().getAbsolutePath();
-			buttonPanel.showTargetFolder(targetFolder);
+            setTargetFolder(fileChooser.getSelectedFile().getAbsolutePath());
 		}
+    }
+
+    private void setTargetFolder(String path) {
+        targetFolder = path;
+        buttonPanel.showTargetFolder(targetFolder);
     }
 
     @Override
@@ -114,6 +118,7 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 	@Override
 	public void startGeneratingWallpapers() {
         statusPanel.addMessage("Start generating wallpapers...");
+        statusPanel.updateStatus(StatusType.working, "Generating wallpapers");
 
 		updateWallpaperThread = new UpdateWallpaperThread(Manager.get().getEngineSettings().getSecondsBetweenUpdate(), this);
         updateWallpaperThread.start();
@@ -122,6 +127,8 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
     @Override
     public void stopGeneratingWallpapers() {
         statusPanel.addMessage("Stop generating wallpapers.");
+        statusPanel.updateStatus(StatusType.idle, "Idle");
+
         if (updateWallpaperThread != null) {
             updateWallpaperThread.stopUpdateWallpaper();
         }
