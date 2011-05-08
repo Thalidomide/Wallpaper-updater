@@ -19,7 +19,7 @@ import java.util.List;
  * @author Olav Jensen
  * @since Apr 11, 2010
  */
-public class SettingsPanel extends Panel {
+public class SettingsPanel extends Panel implements WallpaperScreenSettingsListener {
 
 	private final SettingsListener listener;
 	private Panel subPanel;
@@ -93,7 +93,7 @@ public class SettingsPanel extends Panel {
 
     private void addScreen() {
         WallpaperScreen screen = new WallpaperScreen();
-        WallpaperScreenSettings screenSettings = new WallpaperScreenSettings(screen);
+        WallpaperScreenSettings screenSettings = new WallpaperScreenSettings(screen, this);
 
         settings.addScreen(screen);
         settingsPanels.add(screenSettings);
@@ -102,7 +102,17 @@ public class SettingsPanel extends Panel {
         subPanel.validate();
     }
 
-	private boolean saveAndValidate() {
+    @Override
+    public void remove(WallpaperScreenSettings screenSettings) {
+        settings.removeScreen(screenSettings.getScreen());
+        settingsPanels.remove(screenSettings);
+        subPanel.remove(screenSettings);
+
+        subPanel.validate();
+        subPanel.repaint();
+    }
+
+    private boolean saveAndValidate() {
         boolean valid = true;
 
         for (WallpaperScreenSettings settingsPanel : settingsPanels) {

@@ -1,6 +1,7 @@
 package olj.wallpaperupdater.gui;
 
 import olj.wallpaperupdater.entities.ImageFile;
+import olj.wallpaperupdater.entities.WallpaperScreen;
 import olj.wallpaperupdater.gui.components.CheckBox;
 import olj.wallpaperupdater.gui.components.Label;
 import olj.wallpaperupdater.gui.components.Panel;
@@ -15,6 +16,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +61,36 @@ public class ImageUnitPanel {
 
 			@Override
 			public void executeWork() {
-                //TODO Show part of image...?
-				Manager.get().showPreview(file.getImage(), "Showing preview of " + file.getName());
+                BufferedImage previewImage = file.getImage();
+                int index = 1;
+
+                for (WallpaperScreen screen : Manager.get().getEngineSettings().getScreens()) {
+                    int x = screen.getX();
+                    int y = screen.getY();
+                    int x2 = x + screen.getWidth();
+                    int y2 = y + screen.getHeight();
+
+                    int xMid = x + screen.getWidth() / 2;
+                    int yMid = y + screen.getHeight() / 2;
+
+                    int backgroundSize = 40;
+
+                    Graphics2D g2 = (Graphics2D) previewImage.getGraphics();
+
+                    g2.setColor(new Color(0, 0, 0, 100));
+                    g2.fillOval(xMid - backgroundSize, yMid - backgroundSize, backgroundSize * 2, backgroundSize * 2);
+
+                    g2.setStroke(new BasicStroke(5));
+                    g2.setColor(Color.black);
+
+                    g2.drawRect(x, y, x2, y2);
+                    g2.setFont(new Font("Verdana", Font.PLAIN, 45));
+                    g2.drawString(index + "", xMid - 15, yMid + 15);
+
+                    index++;
+                }
+
+				Manager.get().showPreview(previewImage, "Showing preview of " + file.getName());
 			}
 		}));
 

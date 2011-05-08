@@ -6,6 +6,8 @@ import olj.wallpaperupdater.gui.components.Label;
 import olj.wallpaperupdater.gui.components.Panel;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 /**
@@ -14,28 +16,39 @@ import java.awt.*;
  */
 public class WallpaperScreenSettings extends Panel {
 
-    private WallpaperScreen screen;
+    private final WallpaperScreen screen;
+    private final WallpaperScreenSettingsListener listener;
 
     private IntegerTextField width;
     private IntegerTextField height;
     private IntegerTextField x;
     private IntegerTextField y;
+    private Button remove;
 
 
-    public WallpaperScreenSettings(WallpaperScreen screen) {
-        super(new GridLayout(1, 8));
+    public WallpaperScreenSettings(WallpaperScreen screen, WallpaperScreenSettingsListener listener) {
+        super(new GridLayout(1, 9));
 
         this.screen = screen;
+        this.listener = listener;
 
         width = new IntegerTextField(screen.getWidth());
         height = new IntegerTextField(screen.getHeight());
         x = new IntegerTextField(screen.getX());
         y = new IntegerTextField(screen.getY());
+        remove = new Button("Remove");
 
         width.setOptional(false);
         height.setOptional(false);
         x.setOptional(false);
         y.setOptional(false);
+
+        remove.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+                WallpaperScreenSettings.this.listener.remove(WallpaperScreenSettings.this);
+            }
+        });
 
         add(new Label("Bredde:"));
         add(width);
@@ -45,6 +58,7 @@ public class WallpaperScreenSettings extends Panel {
         add(x);
         add(new Label("Y:"));
         add(y);
+        add(remove);
     }
 
     public WallpaperScreen getScreen() {
