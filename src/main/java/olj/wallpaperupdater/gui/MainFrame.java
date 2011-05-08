@@ -140,10 +140,10 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 			throw new IllegalStateException("There are not any files selected!");
 		}
 
-		File file = selectedFilesOrDirectory[0];
-		String currentPath = isSelectedDirectory() ? file.getAbsolutePath() : file.getParent();
+		//File file = selectedFilesOrDirectory[0];
+		//String currentPath = isSelectedDirectory() ? file.getAbsolutePath() : file.getParent();
 
-		String savePath = currentPath + "/" + "CurrrentWallpaper";
+		String savePath = targetFolder + "/" + "CurrrentWallpaper";
 
         ImageFile randomImage = resultPanel.getRandomImageUnit();
 

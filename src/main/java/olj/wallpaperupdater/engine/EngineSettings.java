@@ -12,7 +12,7 @@ import java.util.List;
 public class EngineSettings {
 
 	private List<WallpaperScreen> screens = new ArrayList<WallpaperScreen>();
-    private int secondsBetweenUpdate = 10;
+    private int secondsBetweenUpdate = 5;
 
     public void addScreen(WallpaperScreen screen) {
         screens.add(screen);
