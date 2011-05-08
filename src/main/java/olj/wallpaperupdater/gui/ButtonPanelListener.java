@@ -8,6 +8,8 @@ public interface ButtonPanelListener {
 
 	void openFolder();
 
+    void selectTargetFolder();
+
 	void startGeneratingWallpapers();
 
 	void showSettings();

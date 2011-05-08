@@ -4,6 +4,8 @@ import olj.wallpaperupdater.engine.ImageSaverLoader;
 import olj.wallpaperupdater.engine.modes.util.ImageUtil;
 import olj.wallpaperupdater.entities.ImageFile;
 import olj.wallpaperupdater.gui.components.Panel;
+import olj.wallpaperupdater.gui.util.UpdateWallpaperListener;
+import olj.wallpaperupdater.gui.util.UpdateWallpaperThread;
 import olj.wallpaperupdater.util.Constants;
 import olj.wallpaperupdater.util.Manager;
 import olj.wallpaperupdater.util.Util;
@@ -19,7 +21,7 @@ import java.util.List;
  * @since 08.apr.2010
  */
 public class MainFrame extends JFrame implements ButtonPanelListener, StatusListener, MessageListener, SettingsListener,
-		ImageTransferHandlerListener {
+		ImageTransferHandlerListener, UpdateWallpaperListener {
 
 	private StatusPanel statusPanel;
 	private ImageUnitsResultPanel resultPanel;
@@ -29,6 +31,10 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 
 	private ViewMode viewMode;
 	private File[] selectedFilesOrDirectory;
+
+    private UpdateWallpaperThread updateWallpaperThread;
+
+    private String targetFolder;
 
 	public MainFrame() throws HeadlessException {
 		setSize(Constants.SIZE);
@@ -79,7 +85,19 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 		}
 	}
 
-	@Override
+    @Override
+    public void selectTargetFolder() {
+        final JFileChooser fileChooser = Util.getImageFileChooser();
+
+		int action = fileChooser.showDialog(MainFrame.this, "Open");
+
+		if (action == JFileChooser.APPROVE_OPTION) {
+            targetFolder = fileChooser.getSelectedFile().getAbsolutePath();
+			buttonPanel.showTargetFolder(targetFolder);
+		}
+    }
+
+    @Override
 	public void openFiles(final File[] files) {
 		Work work = new Work() {
 
@@ -95,7 +113,23 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 
 	@Override
 	public void startGeneratingWallpapers() {
-		if (selectedFilesOrDirectory == null || selectedFilesOrDirectory.length == 0) {
+        statusPanel.addMessage("Start generating wallpapers...");
+
+		updateWallpaperThread = new UpdateWallpaperThread(Manager.get().getEngineSettings().getSecondsBetweenUpdate(), this);
+        updateWallpaperThread.start();
+	}
+
+    @Override
+    public void stopGeneratingWallpapers() {
+        statusPanel.addMessage("Stop generating wallpapers.");
+        if (updateWallpaperThread != null) {
+            updateWallpaperThread.stopUpdateWallpaper();
+        }
+    }
+
+    @Override
+    public void updateWallpaper() {
+        if (selectedFilesOrDirectory == null || selectedFilesOrDirectory.length == 0) {
 			throw new IllegalStateException("There are not any files selected!");
 		}
 
@@ -104,12 +138,11 @@ public class MainFrame extends JFrame implements ButtonPanelListener, StatusList
 
 		String savePath = currentPath + "/" + "CurrrentWallpaper";
 
-		ImageSaverLoader.saveImage(resultPanel.getRandomImageUnit(), savePath);
-	}
+        ImageFile randomImage = resultPanel.getRandomImageUnit();
 
-    @Override
-    public void stopGeneratingWallpapers() {
-        //TODO Implement
+        statusPanel.addMessage("Change wallpaper to: " + randomImage.getName());
+
+		ImageSaverLoader.saveImage(randomImage, savePath);
     }
 
     @Override

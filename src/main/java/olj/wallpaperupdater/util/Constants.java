@@ -15,7 +15,7 @@ public class Constants {
     
     public static final String VERSION = "0.0032";
 
-	public static final Dimension SIZE = new Dimension(800, 900);
+	public static final Dimension SIZE = new Dimension(900, 900);
 	public static final int DEFAULT_PREVIEW_WIDTH = 1024;
 
 	public static final double ZOOM_FACTOR = 1.2;
