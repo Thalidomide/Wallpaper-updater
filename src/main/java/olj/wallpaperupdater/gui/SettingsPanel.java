@@ -46,6 +46,7 @@ public class SettingsPanel extends Panel implements WallpaperScreenSettingsListe
 
 		subPanel = new Panel(l);
 		subPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        //subPanel.setba
 
 		restoreGui();
 

@@ -22,14 +22,16 @@ public class UpdateWallpaperThread extends Thread {
         run = true;
 
         while (run) {
-            try {
-                long startTime = System.currentTimeMillis();
-                listener.updateWallpaper();
-                long remainingMillis = sleepMillis - (System.currentTimeMillis() - startTime);
+            long startTime = System.currentTimeMillis();
+            listener.updateWallpaper();
+            long remainingMillis = sleepMillis - (System.currentTimeMillis() - startTime);
 
-                sleep(remainingMillis);
-            } catch (InterruptedException e) {
-                run = false;
+            if (remainingMillis > 0) {
+                try {
+                    sleep(remainingMillis);
+                } catch (InterruptedException e) {
+                    run = false;
+                }
             }
         }
     }

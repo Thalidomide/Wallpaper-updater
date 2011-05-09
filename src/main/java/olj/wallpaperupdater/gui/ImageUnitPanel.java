@@ -82,8 +82,9 @@ public class ImageUnitPanel {
 
                     g2.setStroke(new BasicStroke(5));
                     g2.setColor(Color.black);
-
                     g2.drawRect(x, y, x2, y2);
+
+                    g2.setColor(Color.white);
                     g2.setFont(new Font("Verdana", Font.PLAIN, 45));
                     g2.drawString(index + "", xMid - 15, yMid + 15);
 
